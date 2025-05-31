@@ -101,30 +101,38 @@ Berikut adalah ringkasan statistik dasar dari variabel numerik pada dataset Calo
 ## Data Preparation
 Sebelum melakukan proses pemodelan, beberapa tahapan data preparation dilakukan untuk memastikan data bersih dan siap diproses oleh algoritma regresi. Berikut adalah langkah-langkah yang dilakukan:
 
-### 1. Pemeriksaan Missing Values
-Dataset dicek untuk mengetahui apakah terdapat nilai yang hilang (missing values). Hasil pemeriksaan menunjukkan bahwa dataset ini tidak memiliki missing values sehingga tidak diperlukan proses imputasi.
+### 1. Pemeriksaan dan Penanganan Duplikasi
+Dataset diperiksa terlebih dahulu untuk mengetahui apakah terdapat baris yang duplikat. Hasilnya menunjukkan bahwa tidak terdapat data duplikat, sehingga tidak dilakukan penghapusan pada tahap ini.
 
-Alasan: Missing values dapat memengaruhi hasil pelatihan model. Jika ditemukan, perlu diatasi agar model tidak belajar dari data yang tidak lengkap.
+Alasan: Duplikasi dapat menyebabkan bias dalam pelatihan model, karena informasi yang sama dihitung lebih dari sekali.
 
-### 2. Pemeriksaan Duplikasi
-Dilakukan pengecekan terhadap duplikat baris pada dataset. Hasilnya, tidak ditemukan baris duplikat sehingga tidak ada data yang dihapus.
+### 2. Pemeriksaan Missing Values
+Dilakukan pengecekan terhadap nilai kosong (missing values) pada setiap kolom. Hasil pemeriksaan menunjukkan bahwa seluruh entri terisi lengkap, sehingga tidak diperlukan teknik imputasi.
 
-Alasan: Duplikasi dapat menyebabkan bias pada model karena informasi yang sama dihitung lebih dari sekali. Pemeriksaan ini penting untuk memastikan integritas data.
+Alasan: Kehadiran nilai kosong dapat mengganggu proses pelatihan model dan menurunkan akurasi prediksi jika tidak ditangani.
 
-### 3. Encoding Variabel Kategorikal
-Variabel Gender merupakan variabel kategorikal dengan dua nilai: Male dan Female. Untuk memproses data ini ke dalam model regresi, dilakukan encoding menggunakan pendekatan label encoding:
-- Male → 1
-- Female → 0
+### 3. Penghapusan Kolom yang Tidak Relevan
+Kolom User_ID dihapus karena hanya berfungsi sebagai identifier unik dan tidak memiliki nilai prediktif terhadap target (Calories_Burnt).
 
-Alasan: Algoritma regresi memerlukan input numerik. Encoding konversi kategori ke angka diperlukan agar model bisa memproses fitur ini.
+Alasan: Menyertakan kolom yang tidak relevan berpotensi menambah noise dalam data dan menurunkan performa model.
 
-### 4. Feature Selection
+### 4. Normalisasi Data (Scaling)
+Fitur-fitur numerik dinormalisasi menggunakan teknik Min-Max Scaling agar nilai setiap fitur berada dalam rentang [0, 1].
+
+Alasan: Scaling sangat penting terutama untuk algoritma seperti K-Nearest Neighbors (KNN) yang sensitif terhadap perbedaan skala antar fitur.
+
+### 5. Deteksi dan Penanganan Outlier
+Outlier dideteksi melalui visualisasi boxplot untuk masing-masing fitur numerik. Nilai-nilai yang berada di luar batas interkuartil (menggunakan metode IQR) kemudian dihapus dari dataset.
+
+Alasan: Outlier dapat mengganggu distribusi data dan menyebabkan model belajar dari informasi yang tidak representatif.
+
+### 6. Feature Selection
 Seleksi fitur dilakukan dengan menganalisis hubungan (korelasi) antara fitur numerik dan target variabel (`Calories_Burnt`). Korelasi dihitung menggunakan metode Pearson.
 
 Dari hasil analisis, ditemukan bahwa dua fitur memiliki hubungan yang sangat lemah terhadap target, sehingga fitur-fitur tersebut **tidak disertakan dalam pemodelan** untuk menghindari noise atau informasi tidak relevan.
 
 **Fitur yang digunakan dalam model:**
-- Gender (setelah encoding)
+- Gender
 - Age
 - Duration
 - Heart Rate
@@ -133,19 +141,15 @@ Dari hasil analisis, ditemukan bahwa dua fitur memiliki hubungan yang sangat lem
 **Target:**
 - Calories Burnt
 
-**Alasan**:  
-Karna melakukan feature selection dengan menganalisis korelasi, maka feature `Height` dan `Weight` yang memiliki korelasi sebesar 0,02 dan 0,04 tidak digunakan dalam melatih model.
+### 7. Encoding Variabel Kategorikal
+Setelah tahap EDA selesai, dilakukan encoding terhadap variabel kategorikal Gender menggunakan metode One-Hot Encoding. Karena hanya terdapat dua kategori, hanya satu dummy variable (Gender_Male) yang disimpan dengan mengaktifkan drop_first=True untuk menghindari multikolinearitas.
 
-### 5. Split Data (Training dan Testing)
+Alasan: Algoritma regresi memerlukan data dalam format numerik. One-Hot Encoding efektif untuk menangani fitur kategorikal non-ordinal seperti gender.
+
+### 8. Split Data (Training dan Testing)
 Data dibagi menjadi dua bagian: training (80%) dan testing (20%) menggunakan fungsi train_test_split() dari scikit-learn.
 
 Alasan: Pembagian ini bertujuan untuk melatih model pada sebagian data dan menguji performanya pada data yang belum pernah dilihat, sehingga dapat mengukur kemampuan generalisasi model.
-
-### 6. Feature Scaling (Normalisasi)
-
-Semua fitur numerik dinormalisasi ke dalam rentang 0–1 menggunakan `MinMaxScaler` dari scikit-learn.
-Meskipun algoritma **Random Forest** secara teori tidak memerlukan scaling karena berbasis pohon keputusan, proses normalisasi tetap diterapkan **demi menjaga konsistensi preprocessing antar model**. Ini juga memastikan bahwa algoritma **K-Nearest Neighbors (KNN)** — yang sensitif terhadap skala fitur — dapat bekerja secara optimal.
-Dengan demikian, kedua model mendapatkan input yang telah dinormalisasi secara seragam.
 
 
 ## Modeling
