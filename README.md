@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Azza WAfiqurrohmah
+# Laporan Proyek Machine Learning - Azza Wafiqurrohmah
 
 # Calories Burnt Prediction
 
