@@ -40,7 +40,12 @@ https://www.kaggle.com/datasets/ruchikakumbhar/calories-burnt-prediction.
 
 Dataset ini berisi data yang merekam berbagai atribut fisik dan aktivitas seseorang yang dapat digunakan untuk memprediksi jumlah kalori yang terbakar. Dataset mencakup sejumlah fitur yang berperan sebagai variabel input dan satu variabel target, yaitu kalori terbakar.
 
-### Variabel-variabel pada dataset ini adalah sebagai berikut:
+### Jumlah Baris dan Kolom :
+Dataset ini terdiri dari 15.000 baris dan 9 kolom. Setiap baris merepresentasikan satu observasi aktivitas fisik dari seorang individu.
+
+### Struktur Variabel
+Berikut adalah deskripsi masing-masing variabel dalam dataset:
+
 | Variabel       | Tipe Data   | Deskripsi                                             |
 |----------------|-------------|-------------------------------------------------------|
 | User_ID        | Kategori    | ID unik dari individu yang melakukan aktivitas        |
@@ -52,6 +57,11 @@ Dataset ini berisi data yang merekam berbagai atribut fisik dan aktivitas seseor
 | Heart_Rate     | Numerik     | Detak jantung rata-rata selama aktivitas (bpm)        |
 | Body_Temp      | Numerik     | Suhu tubuh selama aktivitas (derajat Celsius)         |
 | Calories_Burnt | Numerik     | Jumlah kalori yang terbakar selama aktivitas (target) |
+
+### Kondisi Data
+- Missing Values: Dari hasil pemeriksaan awal, tidak ditemukan missing values pada dataset ini. Semua entri lengkap dan siap digunakan untuk proses modeling.
+- Data Duplikat: Tidak Ditemukan data duplikat di dataset ini.
+- Outliers : Berdasarkan proses analisis dengan menggunakan boxplot, ditemukan beberepa outlier yg tersebar di beberapa kolom, yaitu kolom Height, Weight, Body Temperature, dan kolom Calories.
 
 ## Exploratory Data Analysis (EDA)
 
