@@ -153,31 +153,41 @@ Alasan: Pembagian ini bertujuan untuk melatih model pada sebagian data dan mengu
 
 
 ## Modeling
+Pada proyek ini, digunakan dua algoritma regresi untuk memprediksi jumlah kalori yang terbakar (Calories_Burnt), yaitu K-Nearest Neighbors (KNN) dan Random Forest Regressor (RF). Tujuan utama proyek ini adalah membandingkan performa kedua algoritma dalam melakukan prediksi secara akurat dan andal.
 
-Pada proyek ini, digunakan dua algoritma regresi untuk memprediksi jumlah kalori yang terbakar (`Calories_Burnt`), yaitu **K-Nearest Neighbors (KNN)** dan **Random Forest (RF)**. Tujuan utama proyek ini adalah membandingkan performa kedua algoritma dalam memprediksi kalori terbakar secara akurat.
+### 1. K-Nearest Neighbors (KNN)
+#### Cara Kerja :
+KNN adalah algoritma non-parametrik yang memprediksi nilai target berdasarkan rata-rata nilai dari k tetangga terdekat di ruang fitur. Jarak antar data biasanya dihitung menggunakan Euclidean Distance. Dalam konteks regresi, KNN akan mencari k data poin yang paling dekat dengan data baru, lalu menghitung rata-rata dari nilai target (Calories_Burnt) milik tetangga-tetangga tersebut sebagai hasil prediksi.
 
-### Tahapan dan Parameter Modeling
+#### Parameter : 
+Model KNN diinisialisasi dengan parameter berikut:
+- n_neighbors=10 → Jumlah tetangga terdekat yang digunakan untuk prediksi
 
-- **K-Nearest Neighbors (KNN)**  
-  Model KNN menggunakan parameter `n_neighbors=5`. Karena KNN bergantung pada jarak antar data, dilakukan normalisasi fitur numerik menggunakan `MinMaxScaler` agar skala fitur seragam dan prediksi optimal.
+Catatan: Sebelum diterapkan ke model KNN, semua fitur numerik dinormalisasi menggunakan MinMaxScaler agar skala antar fitur seragam, mengingat KNN sangat sensitif terhadap skala data.
 
-- **Random Forest Regressor (RF)**  
-  Model RF menggunakan parameter `n_estimators=50` (jumlah pohon keputusan) dan `max_depth=16` (kedalaman maksimal pohon). Meskipun RF tidak terlalu sensitif pada skala fitur, normalisasi tetap dilakukan untuk konsistensi preprocessing.
+### 2. Random Forest Regressor (RF)
+#### Cara Kerja :
+Random Forest adalah algoritma ensemble learning berbasis pohon keputusan. Ia membangun banyak decision tree secara acak pada subset data (dengan teknik bootstrap) dan menggabungkan prediksi semua pohon (dalam regresi: rata-rata prediksi) untuk meningkatkan akurasi dan mengurangi risiko overfitting. Random Forest juga melakukan pemilihan fitur secara acak pada setiap split, yang membuatnya sangat kuat dalam menangani data kompleks dan non-linear.
 
-### Kelebihan dan Kekurangan
+#### Parameter :
+Model Random Forest diinisialisasi dengan parameter sebagai berikut:
+- n_estimators=50 → Jumlah pohon yang dibangun
+- max_depth=16 → Kedalaman maksimum setiap pohon
+- random_state=55 → Seed acak untuk memastikan hasil konsisten
+- n_jobs=-1 → Menggunakan seluruh core CPU untuk mempercepat proses training
 
-| Algoritma        | Kelebihan                                               | Kekurangan                                               |
-|------------------|---------------------------------------------------------|----------------------------------------------------------|
-| **KNN**          | - Mudah diimplementasikan                                | - Sensitif terhadap skala fitur dan outlier              |
-|                  | - Tidak perlu asumsi distribusi data                     | - Performa menurun jika data sangat besar                 |
-| **Random Forest** | - Mampu menangani data non-linear dan kompleks          | - Model kompleks dan kurang mudah diinterpretasi         |
-|                  | - Robust terhadap outlier dan overfitting               | - Proses training lebih lambat dibanding model sederhana |
-|                  | - Memberikan estimasi pentingnya fitur                   |                                                          |
+Catatan: Meskipun Random Forest tidak sensitif terhadap skala fitur seperti KNN, normalisasi tetap diterapkan demi konsistensi preprocessing.
 
-### Pemilihan Model Terbaik
+## Kelebihan dan Kekurangan
 
-Berdasarkan evaluasi, Random Forest menunjukkan nilai Mean Squared Error (MSE) yang lebih rendah pada data training dan testing dibanding KNN. Hal ini menunjukkan bahwa Random Forest memiliki kemampuan prediksi yang lebih baik dan generalisasi yang lebih kuat, sehingga dipilih sebagai model terbaik.
+| Algoritma                  | Kelebihan                                                                                     | Kekurangan                                                                |
+|----------------------------|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| **K-Nearest Neighbors (KNN)** | - Mudah diimplementasikan<br>- Tidak memerlukan proses training<br>- Cocok untuk dataset kecil | - Sensitif terhadap skala fitur dan outlier<br>- Kurang efisien untuk dataset besar |
+| **Random Forest Regressor (RF)** | - Mampu menangani data non-linear dan kompleks<br>- Robust terhadap overfitting dan outlier<br>- Menyediakan estimasi pentingnya fitur | - Model lebih kompleks dan sulit diinterpretasi<br>- Proses training relatif lambat |
 
+
+4. Pemilihan Model Terbaik
+Berdasarkan evaluasi menggunakan metrik Mean Squared Error (MSE), Random Forest menunjukkan performa yang lebih baik pada data training dan testing dibandingkan KNN. Hal ini menunjukkan bahwa Random Forest mampu menangkap pola dalam data secara lebih efektif serta memiliki kemampuan generalisasi yang lebih tinggi. Oleh karena itu, model Random Forest dipilih sebagai model terbaik untuk prediksi jumlah kalori terbakar.
 ---
 
 ## Evaluation
