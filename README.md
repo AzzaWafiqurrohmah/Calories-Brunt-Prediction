@@ -142,9 +142,9 @@ Dari hasil analisis, ditemukan bahwa dua fitur memiliki hubungan yang sangat lem
 - Calories Burnt
 
 ### 7. Encoding Variabel Kategorikal
-Setelah tahap EDA selesai, dilakukan encoding terhadap variabel kategorikal Gender menggunakan metode One-Hot Encoding. Karena hanya terdapat dua kategori, hanya satu dummy variable (Gender_Male) yang disimpan dengan mengaktifkan drop_first=True untuk menghindari multikolinearitas.
+Setelah tahap EDA selesai, dilakukan encoding terhadap variabel kategorikal Gender menggunakan metode One-Hot Encoding. Karena variabel ini hanya memiliki dua kategori (Male dan Female), maka proses encoding menghasilkan dua kolom dummy: Gender_Male dan Gender_Female, yang keduanya disimpan dalam dataset.
 
-Alasan: Algoritma regresi memerlukan data dalam format numerik. One-Hot Encoding efektif untuk menangani fitur kategorikal non-ordinal seperti gender.
+Alasan penggunaan One-Hot Encoding adalah karena algoritma regresi memerlukan data dalam format numerik. Metode ini efektif untuk menangani fitur kategorikal non-ordinal seperti gender. Meskipun menyimpan dua dummy variable bisa menyebabkan redundansi atau potensi multikolinearitas, dalam konteks ini kedua variabel tetap dipertahankan untuk menjaga informasi kategori secara eksplisit.
 
 ### 8. Split Data (Training dan Testing)
 Data dibagi menjadi dua bagian: training (80%) dan testing (20%) menggunakan fungsi train_test_split() dari scikit-learn.
